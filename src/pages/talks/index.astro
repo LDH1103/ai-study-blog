@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatKoreanDate } from '../../lib/format-date';
+import { toSitePath } from '../../lib/site-path';
+
+const siteBase = import.meta.env.BASE_URL;
+const talks = (await getCollection('talks', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.presentedAt.getTime() - a.data.presentedAt.getTime(),
+);
+---
+
+<BaseLayout title="발표" description="AI 스터디에서 공유한 발표의 핵심과 자료를 모아 둡니다." activePath="/talks">
+  <div class="content-column">
+    <header class="page-heading">
+      <p class="eyebrow">Study talks</p>
+      <h1>발표</h1>
+      <p>한 번의 발표를 이해의 중간 결과로 남기고, 다음 질문으로 이어 갑니다.</p>
+    </header>
+
+    {
+      talks.length > 0 ? (
+        <ol class="entry-list">
+          {talks.map((talk) => (
+            <li>
+              <article>
+                <p class="entry-meta">
+                  <time datetime={talk.data.presentedAt.toISOString().slice(0, 10)}>
+                    {formatKoreanDate(talk.data.presentedAt)}
+                  </time>
+                </p>
+                <h2><a href={toSitePath(siteBase, `/talks/${talk.id}/`)}>{talk.data.title}</a></h2>
+                <p>{talk.data.description}</p>
+                {
+                  talk.data.tags.length > 0 && (
+                    <ul class="tag-list" aria-label={`${talk.data.title} 태그`}>
+                      {talk.data.tags.map((tag) => <li>{tag}</li>)}
+                    </ul>
+                  )
+                }
+                <p><a href={toSitePath(siteBase, `/talks/${talk.id}/`)}>발표 보기<span class="visually-hidden">: {talk.data.title}</span></a></p>
+              </article>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p class="empty-state">아직 공개된 발표가 없습니다. 첫 스터디 자료를 준비하고 있습니다.</p>
+      )
+    }
+  </div>
+</BaseLayout>

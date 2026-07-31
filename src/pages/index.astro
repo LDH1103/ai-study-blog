@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatKoreanDate } from '../lib/format-date';
+import { toSitePath } from '../lib/site-path';
+
+const siteBase = import.meta.env.BASE_URL;
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+const talks = (await getCollection('talks', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.presentedAt.getTime() - a.data.presentedAt.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="AI Study Log"
+  description="AI 스터디의 학습 기록과 발표 자료를 차분히 쌓아가는 개인 연구 노트입니다."
+  activePath="/"
+>
+  <div class="content-column">
+    <header class="page-heading home-heading">
+      <p class="eyebrow">Personal research notebook</p>
+      <h1>배운 것을, 다시 설명할 수 있을 때까지.</h1>
+      <p>
+        AI를 공부하며 남긴 읽기 기록, 실습 메모, 그리고 스터디 발표 자료를 한 흐름으로 정리합니다.
+      </p>
+    </header>
+
+    <section class="home-section" aria-labelledby="latest-notes-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Learning notes</p>
+          <h2 id="latest-notes-heading">최근 학습</h2>
+        </div>
+        <a href={toSitePath(siteBase, '/notes/')}>모든 학습 노트 보기<span class="visually-hidden">: 최근 학습</span></a>
+      </div>
+      {
+        notes.length > 0 ? (
+          <ol class="entry-list">
+            {notes.map((note) => (
+              <li>
+                <article>
+                  <p class="entry-meta">
+                    <time datetime={note.data.publishedAt.toISOString().slice(0, 10)}>
+                      {formatKoreanDate(note.data.publishedAt)}
+                    </time>
+                  </p>
+                  <h3><a href={toSitePath(siteBase, `/notes/${note.id}/`)}>{note.data.title}</a></h3>
+                  <p>{note.data.description}</p>
+                </article>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="empty-state">첫 학습 기록을 정리하고 있습니다. 곧 이곳에서 만날 수 있습니다.</p>
+        )
+      }
+    </section>
+
+    <section class="home-section" aria-labelledby="latest-talks-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Study talks</p>
+          <h2 id="latest-talks-heading">최근 발표</h2>
+        </div>
+        <a href={toSitePath(siteBase, '/talks/')}>모든 발표 보기<span class="visually-hidden">: 최근 발표</span></a>
+      </div>
+      {
+        talks.length > 0 ? (
+          <ol class="entry-list">
+            {talks.map((talk) => (
+              <li>
+                <article>
+                  <p class="entry-meta">
+                    <time datetime={talk.data.presentedAt.toISOString().slice(0, 10)}>
+                      {formatKoreanDate(talk.data.presentedAt)}
+                    </time>
+                  </p>
+                  <h3><a href={toSitePath(siteBase, `/talks/${talk.id}/`)}>{talk.data.title}</a></h3>
+                  <p>{talk.data.description}</p>
+                </article>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="empty-state">다음 스터디 발표를 준비하고 있습니다. 자료가 공개되면 여기에 남깁니다.</p>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>

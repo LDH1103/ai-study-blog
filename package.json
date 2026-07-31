@@ -1,0 +1,24 @@
+{
+  "name": "ai-study-blog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "slides:build": "npm run slides:html",
+    "slides:html": "marp --input-dir talks --output public/slides --html",
+    "slides:pdf": "marp --input-dir talks --output public/slides --pdf",
+    "slides:pptx": "marp --input-dir talks --output public/slides --pptx"
+  },
+  "devDependencies": {
+    "@astrojs/mdx": "^7.0.5",
+    "@marp-team/marp-cli": "^4.5.0",
+    "astro": "^7.1.6"
+  }
+}
