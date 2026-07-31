@@ -6,4 +6,4 @@
 - [x] [UI] 홈·노트·발표·소개 페이지 구현 (산출물: `src/pages/`)
 - [x] [콘텐츠] 첫 학습 노트와 발표 템플릿 추가 (산출물: `src/content/`, `talks/`)
 - [x] [검증] 정적 빌드와 프로젝트 경로 링크 점검 (산출물: build 결과; `slides:build`·`build`·7개 정적 산출물·프로젝트 경로 링크 PASS)
-- [ ] [배포] GitHub 저장소 생성·초기 커밋·Pages 배포 확인 (산출물: 공개 URL)
+- [x] [배포] GitHub 저장소 생성·초기 커밋·Pages 배포 확인 (산출물: https://ldh1103.github.io/ai-study-blog/; workflow와 공개 URL 200 PASS)
