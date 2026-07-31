@@ -26,12 +26,12 @@ const { Content } = await render(entry);
 <BaseLayout title={entry.data.title} description={entry.data.description} activePath="/notes">
   <article class="content-column prose">
     <nav class="breadcrumb" aria-label="경로">
-      <a href={toSitePath(siteBase, '/notes/')}>학습 노트</a>
+      <a href={toSitePath(siteBase, '/notes/')}>글</a>
       <span aria-hidden="true">/</span>
       <span aria-current="page">{entry.data.title}</span>
     </nav>
     <header class="article-header">
-      <p class="eyebrow">Learning note</p>
+      <p class="eyebrow">Study post</p>
       <h1>{entry.data.title}</h1>
       <p>{entry.data.description}</p>
       <p class="entry-meta">
@@ -44,6 +44,15 @@ const { Content } = await render(entry);
           <ul class="tag-list" aria-label="태그">
             {entry.data.tags.map((tag) => <li>{tag}</li>)}
           </ul>
+        )
+      }
+      {
+        entry.data.slidesHtml && (
+          <p>
+            <a href={toSitePath(siteBase, entry.data.slidesHtml)}>
+              슬라이드 보기<span class="visually-hidden">: {entry.data.title}</span>
+            </a>
+          </p>
         )
       }
     </header>

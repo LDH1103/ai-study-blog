@@ -11,14 +11,14 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
 ---
 
 <BaseLayout
-  title="학습 노트"
-  description="AI 스터디에서 읽고 실습하며 남긴 학습 기록입니다."
+  title="글"
+  description="AI 스터디에서 읽고 실험하며 남긴 학습 기록입니다."
   activePath="/notes"
 >
   <div class="content-column">
     <header class="page-heading">
-      <p class="eyebrow">Learning notes</p>
-      <h1>학습 노트</h1>
+      <p class="eyebrow">Post archive</p>
+      <h1>글</h1>
       <p>이해한 내용을 내 언어로 다시 쓰고, 다음 실습의 출발점으로 남깁니다.</p>
     </header>
 
@@ -42,13 +42,13 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
                     </ul>
                   )
                 }
-                <p><a href={toSitePath(siteBase, `/notes/${note.id}/`)}>노트 읽기<span class="visually-hidden">: {note.data.title}</span></a></p>
+                <p><a href={toSitePath(siteBase, `/notes/${note.id}/`)}>글 읽기<span class="visually-hidden">: {note.data.title}</span></a></p>
               </article>
             </li>
           ))}
         </ol>
       ) : (
-        <p class="empty-state">아직 공개된 학습 노트가 없습니다. 첫 기록을 다듬는 중입니다.</p>
+        <p class="empty-state">아직 공개된 글이 없습니다. 첫 기록을 다듬는 중입니다.</p>
       )
     }
   </div>

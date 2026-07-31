@@ -6,6 +6,7 @@ tags:
   - AI 스터디
   - 학습 기록
   - 킥오프
+slidesHtml: "/slides/ai-study-kickoff.html"
 ---
 
 ## 이 노트의 목표
