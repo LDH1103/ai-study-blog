@@ -23,17 +23,10 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} activePath="/notes">
+<BaseLayout title={entry.data.title} description={entry.data.description}>
   <article class="content-column prose">
-    <nav class="breadcrumb" aria-label="경로">
-      <a href={toSitePath(siteBase, '/notes/')}>글</a>
-      <span aria-hidden="true">/</span>
-      <span aria-current="page">{entry.data.title}</span>
-    </nav>
     <header class="article-header">
-      <p class="eyebrow">Study post</p>
       <h1>{entry.data.title}</h1>
-      <p>{entry.data.description}</p>
       <p class="entry-meta">
         <time datetime={entry.data.publishedAt.toISOString().slice(0, 10)}>
           {formatKoreanDate(entry.data.publishedAt)}

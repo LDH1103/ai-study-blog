@@ -5,16 +5,12 @@ import { toSitePath } from '../lib/site-path';
 interface Props {
   title: string;
   description: string;
-  activePath?: '/' | '/notes';
 }
 
-const { title, description, activePath } = Astro.props;
+const { title, description } = Astro.props;
 const siteName = 'AI Lab Log';
 const baseUrl = import.meta.env.BASE_URL;
 const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
-const navigation = [
-  { href: '/notes', label: '글' },
-] as const;
 
 ---
 
@@ -28,29 +24,6 @@ const navigation = [
   </head>
   <body>
     <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
-    <header class="site-header">
-      <div class="site-frame masthead">
-        <a class="site-name" href={toSitePath(baseUrl, '/')} aria-label={`${siteName} 홈`}>
-          {siteName}
-        </a>
-        <nav aria-label="주요 메뉴">
-          <ul class="site-nav">
-            {
-              navigation.map((item) => (
-                <li>
-                  <a
-                    href={toSitePath(baseUrl, item.href === '/' ? item.href : `${item.href}/`)}
-                    aria-current={item.href === activePath ? 'page' : undefined}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
-    </header>
     <main id="main-content" class="site-main site-frame" tabindex="-1">
       <slot />
     </main>

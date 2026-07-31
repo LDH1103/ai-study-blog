@@ -23,3 +23,9 @@
 - [x] [UI] 밝은 중립 블로그 규칙으로 공통·목록·상세·반응형 스타일을 단순화 (산출물: `src/styles/global.css`; 스타일·정적 HTML·경로 PASS)
 - [x] [검증] 데스크톱 1280px·모바일 390px 시각, 키보드, 내부 링크와 정적 빌드 확인 (산출물: screenshot, `slides:build`·`build`·경로 smoke PASS)
 - [x] [배포] 단일 탭 디자인 커밋·GitHub Pages 배포 확인 (산출물: `e5e7fcc`, workflow `30620125551`, 홈·글·첫 글·슬라이드 200 PASS, 단일 `글` 메뉴 확인)
+
+## 승인 대기: 두 화면 구조로 단순화
+
+- [x] [UI] 공통 헤더·탐색 메뉴·활성 경로 계약을 제거 (산출물: `src/layouts/BaseLayout.astro`, `src/styles/global.css`; 헤더 DOM·navigation·`activePath` 제거, 본문 높이 재조정)
+- [x] [UI] 홈의 Hero·소개문 없이 전체 공개 글 목록만 두고, 상세 breadcrumb를 제거하며 중복 목록·소개 경로는 목록으로 이동 (산출물: `src/pages/index.astro`, `src/pages/notes/index.astro`, `src/pages/notes/[...slug].astro`, `src/pages/about.astro`; `Astro.redirect()` 정적 산출물에서 홈 이동 확인)
+- [x] [검증] 정적 빌드·목록/상세 경로·메뉴 부재·모바일 제목 줄바꿈을 확인 (산출물: `npm run build`, 정적 HTML 검사; legacy redirect·홈 목록·상세 breadcrumb 부재·모바일 overflow 방지·PNG 무수정 PASS)
