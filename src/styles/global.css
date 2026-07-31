@@ -45,7 +45,7 @@
     --text: #f1f2ee;
     --text-muted: #bcc1c7;
     --text-faint: #808894;
-    --rule: #2d323a;
+    --rule: #3a424d;
     --rule-strong: #4b5360;
     --link: #8ee7df;
     --link-hover: #cdfaf4;
@@ -167,6 +167,11 @@
   .site-main {
     min-height: calc(100vh - 6.25rem);
     padding-block: clamp(3rem, 8vw, 6.5rem);
+  }
+
+  .site-main:has(.post-index) {
+    min-height: 0;
+    padding-bottom: clamp(3rem, 6vw, 4.5rem);
   }
 
   .content-column {
