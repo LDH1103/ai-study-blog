@@ -22,4 +22,4 @@
 - [x] [UI] 홈을 상태 카드·순번 없는 짧은 소개와 최신 글 목록으로 재구성 (산출물: `src/pages/index.astro`; 정적 HTML·경로·a11y PASS)
 - [x] [UI] 밝은 중립 블로그 규칙으로 공통·목록·상세·반응형 스타일을 단순화 (산출물: `src/styles/global.css`; 스타일·정적 HTML·경로 PASS)
 - [x] [검증] 데스크톱 1280px·모바일 390px 시각, 키보드, 내부 링크와 정적 빌드 확인 (산출물: screenshot, `slides:build`·`build`·경로 smoke PASS)
-- [ ] [배포] 단일 탭 디자인 커밋·GitHub Pages 배포 확인 (산출물: 공개 URL)
+- [x] [배포] 단일 탭 디자인 커밋·GitHub Pages 배포 확인 (산출물: `e5e7fcc`, workflow `30620125551`, 홈·글·첫 글·슬라이드 200 PASS, 단일 `글` 메뉴 확인)
