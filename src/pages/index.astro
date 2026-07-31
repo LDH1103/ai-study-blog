@@ -15,7 +15,7 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft))
   title="AI Lab Log"
   description="AI를 공부하고 실험하며 검증한 기록을 쌓는 개인 기술 블로그입니다."
 >
-  <div class="content-column">
+  <div class="content-column post-index">
     <h1 class="visually-hidden">글 목록</h1>
     {
       notes.length > 0 ? (
