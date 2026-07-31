@@ -10,8 +10,6 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
 ;
 const latestNotes = notes.slice(0, 5);
-const focusTopics = [...new Set(notes.flatMap((note) => note.data.tags))].slice(0, 3);
-const studyStatus = notes.length > 0 ? '기록 운영 중' : '첫 기록 준비 중';
 ---
 
 <BaseLayout
@@ -22,62 +20,36 @@ const studyStatus = notes.length > 0 ? '기록 운영 중' : '첫 기록 준비 
   <div class="content-column home-content">
     <header class="home-hero">
       <div class="home-hero__intro">
-        <p class="eyebrow">AI Lab Log</p>
-        <h1>공부 → 실험 → 검증</h1>
-        <p>AI를 읽고, 직접 확인하고, 다시 쓸 수 있는 기록으로 남깁니다.</p>
+        <h1>AI를 공부하며 기록합니다.</h1>
+        <p>읽고 이해한 내용과 직접 확인한 결과를 차분히 남깁니다.</p>
       </div>
-
-      <aside class="study-status" aria-labelledby="study-status-heading">
-        <p class="eyebrow">Current status</p>
-        <h2 id="study-status-heading">현재 학습 상태</h2>
-        <dl>
-          <div>
-            <dt>기록 수</dt>
-            <dd>{notes.length}개</dd>
-          </div>
-          <div>
-            <dt>관심 주제</dt>
-            <dd>{focusTopics.length > 0 ? focusTopics.join(' · ') : '주제 탐색 중'}</dd>
-          </div>
-          <div>
-            <dt>운영 상태</dt>
-            <dd>{studyStatus}</dd>
-          </div>
-        </dl>
-      </aside>
     </header>
 
     <section class="home-section latest-posts" aria-labelledby="latest-notes-heading">
       <div class="section-heading">
-        <div>
-          <p class="eyebrow">Latest posts</p>
-          <h2 id="latest-notes-heading">최신 글</h2>
-        </div>
+        <h2 id="latest-notes-heading">최신 글</h2>
         <a href={toSitePath(siteBase, '/notes/')}>글 전체 보기<span class="visually-hidden">: 최신 글</span></a>
       </div>
       {
         latestNotes.length > 0 ? (
           <ol class="entry-list post-feed">
-            {latestNotes.map((note, index) => (
+            {latestNotes.map((note) => (
               <li>
-                <article class="post-feed__item">
-                  <p class="post-feed__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
-                  <div class="post-feed__content">
-                    <p class="entry-meta">
-                      <time datetime={note.data.publishedAt.toISOString().slice(0, 10)}>
-                        {formatKoreanDate(note.data.publishedAt)}
-                      </time>
-                    </p>
-                    <h3><a href={toSitePath(siteBase, `/notes/${note.id}/`)}>{note.data.title}</a></h3>
-                    <p>{note.data.description}</p>
-                    {
-                      note.data.tags.length > 0 && (
-                        <ul class="tag-list" aria-label={`${note.data.title} 태그`}>
-                          {note.data.tags.map((tag) => <li>{tag}</li>)}
-                        </ul>
-                      )
-                    }
-                  </div>
+                <article>
+                  <p class="entry-meta">
+                    <time datetime={note.data.publishedAt.toISOString().slice(0, 10)}>
+                      {formatKoreanDate(note.data.publishedAt)}
+                    </time>
+                  </p>
+                  <h3><a href={toSitePath(siteBase, `/notes/${note.id}/`)}>{note.data.title}</a></h3>
+                  <p>{note.data.description}</p>
+                  {
+                    note.data.tags.length > 0 && (
+                      <ul class="tag-list" aria-label={`${note.data.title} 태그`}>
+                        {note.data.tags.map((tag) => <li>{tag}</li>)}
+                      </ul>
+                    )
+                  }
                 </article>
               </li>
             ))}

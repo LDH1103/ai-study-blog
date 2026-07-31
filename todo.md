@@ -15,3 +15,11 @@
 - [x] [UI] 공통 masthead·글 목록·상세에 dark technical palette, monospace 메타데이터, 아카이브 행 규칙 적용 (산출물: `src/layouts/BaseLayout.astro`, `src/styles/global.css`, 필요 시 기존 페이지)
 - [x] [검증] 데스크톱 1280px·모바일 390px 시각 및 키보드·경로 smoke 점검 (산출물: desktop/mobile screenshot, `slides:build`·`build`·내부 경로 PASS)
 - [x] [배포] 블로그형 디자인 보강 커밋·GitHub Pages 배포 확인 (산출물: `f1c24c7`, workflow `30618199020`, 홈·글·슬라이드 200 PASS, `/talks/` 404 확인)
+
+## 디자인 단순화: 단일 탭 블로그
+
+- [x] [UI] 상단 탐색을 `글` 하나로 축소하고 로고 홈 링크·소개 페이지의 활성 상태 계약을 정리 (산출물: `src/layouts/BaseLayout.astro`, `src/pages/about.astro`; 정적 HTML·경로·a11y PASS)
+- [x] [UI] 홈을 상태 카드·순번 없는 짧은 소개와 최신 글 목록으로 재구성 (산출물: `src/pages/index.astro`; 정적 HTML·경로·a11y PASS)
+- [x] [UI] 밝은 중립 블로그 규칙으로 공통·목록·상세·반응형 스타일을 단순화 (산출물: `src/styles/global.css`; 스타일·정적 HTML·경로 PASS)
+- [x] [검증] 데스크톱 1280px·모바일 390px 시각, 키보드, 내부 링크와 정적 빌드 확인 (산출물: screenshot, `slides:build`·`build`·경로 smoke PASS)
+- [ ] [배포] 단일 탭 디자인 커밋·GitHub Pages 배포 확인 (산출물: 공개 URL)
