@@ -14,4 +14,4 @@
 - [x] [UI] 홈을 compact AI Lab Log Hero·현재 학습 상태·최신 글 피드로 재구성 (산출물: `src/pages/index.astro`)
 - [x] [UI] 공통 masthead·글 목록·상세에 dark technical palette, monospace 메타데이터, 아카이브 행 규칙 적용 (산출물: `src/layouts/BaseLayout.astro`, `src/styles/global.css`, 필요 시 기존 페이지)
 - [x] [검증] 데스크톱 1280px·모바일 390px 시각 및 키보드·경로 smoke 점검 (산출물: desktop/mobile screenshot, `slides:build`·`build`·내부 경로 PASS)
-- [ ] [배포] 블로그형 디자인 보강 커밋·GitHub Pages 배포 확인 (산출물: 공개 URL)
+- [x] [배포] 블로그형 디자인 보강 커밋·GitHub Pages 배포 확인 (산출물: `f1c24c7`, workflow `30618199020`, 홈·글·슬라이드 200 PASS, `/talks/` 404 확인)
