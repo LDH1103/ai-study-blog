@@ -198,6 +198,12 @@ Ponytail은 "이 기능을 새로 만들어야 하나"를 먼저 묻는 스킬�
 >
 > “Native platform feature covers it? `<input type="date">` over a picker lib...”
 
+자연스럽게 옮기면 다음 뜻이다.
+
+> “문제가 해결되는 가장 이른 단계에서 멈춘다.”
+>
+> “플랫폼 기본 기능으로 해결된다면, 날짜 선택 라이브러리보다 `<input type="date">`를 먼저 쓴다.”
+
 *Ponytail [SKILL.md 원문](https://github.com/DietrichGebert/ponytail/blob/main/skills/ponytail/SKILL.md)에서 일부 발췌했습니다.*
 
 ### 코드로 비교해 보면
