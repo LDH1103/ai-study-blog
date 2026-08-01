@@ -213,7 +213,10 @@ async function handleAuth(request: Request, url: URL, env: Env) {
     return textResponse('Invalid OAuth provider.', 400);
   }
 
-  if (!hasAllowedReferrer(request, env.ALLOWED_ORIGIN)) {
+  const hasAllowedOrigin = hasAllowedReferrer(request, env.ALLOWED_ORIGIN);
+  console.log('GitHub OAuth authorization started.', { hasAllowedOrigin });
+
+  if (!hasAllowedOrigin) {
     return textResponse('Unauthorized admin origin.', 403);
   }
 
@@ -248,7 +251,13 @@ async function handleCallback(request: Request, url: URL, env: Env) {
   const state = url.searchParams.get('state');
   const savedState = readCookie(request, stateCookieName);
 
-  if (!state || !savedState || !statesMatch(state, savedState)) {
+  const hasValidState = Boolean(state && savedState && statesMatch(state, savedState));
+  console.log('GitHub OAuth callback received.', {
+    hasCode: Boolean(url.searchParams.get('code')),
+    hasValidState,
+  });
+
+  if (!hasValidState) {
     return textResponse('OAuth state validation failed.', 403);
   }
 
@@ -272,10 +281,23 @@ async function handleCallback(request: Request, url: URL, env: Env) {
     const response = popupResponse(env.ALLOWED_ORIGIN, 'success', { token });
     response.headers.set('Set-Cookie', clearStateCookie());
     return response;
-  } catch {
-    const response = popupResponse(env.ALLOWED_ORIGIN, 'error', {
-      error: 'GitHub authorization could not be completed for this account.',
-    });
+  } catch (error) {
+    const failureMessage =
+      error instanceof Error &&
+      [
+        'GitHub access token exchange failed.',
+        'GitHub did not issue an access token.',
+        'GitHub user verification failed.',
+        'This GitHub account is not allowed to manage the blog.',
+        'The configured repository could not be verified.',
+        'This GitHub account cannot publish to the configured repository.',
+      ].includes(error.message)
+        ? error.message
+        : 'GitHub OAuth callback failed unexpectedly.';
+
+    console.error('GitHub OAuth callback failed:', failureMessage);
+
+    const response = textResponse(`GitHub OAuth callback failed: ${failureMessage}`, 502);
     response.headers.set('Set-Cookie', clearStateCookie());
     return response;
   }
