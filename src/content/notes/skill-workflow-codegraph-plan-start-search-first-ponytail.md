@@ -207,22 +207,31 @@ Ponytail은 “이 기능을 새로 만들어야 하나?”를 먼저 확인한�
 
 목록 화면에서 URL의 `tab` 값 하나만 읽는 상황을 기록해 둔다. 필요한 값은 `all`, `open`, `done` 중 하나이고, 복잡한 URL 직렬화는 없다.
 
-**과잉 구현 — 새 라이브러리와 래퍼 추가**
+**과잉 구현 — 소스 12줄, 패키지 1개, 단일 사용 함수 2개**
 
 ```ts
 import queryString from "query-string";
 
-export function getSelectedTab(search: string) {
-  const parsed = queryString.parse(search);
-  const tab = parsed.tab;
+type Tab = "all" | "open" | "done";
+const DEFAULT_TAB: Tab = "all";
 
-  return tab === "open" || tab === "done" ? tab : "all";
+function isTab(value: string | null): value is Tab {
+  return value === "all" || value === "open" || value === "done";
 }
+
+function getSelectedTab(search: string): Tab {
+  const raw = queryString.parse(search).tab;
+  const tab = typeof raw === "string" ? raw : null;
+
+  return isTab(tab) ? tab : DEFAULT_TAB;
+}
+
+const selectedTab = getSelectedTab(location.search);
 ```
 
-이 코드 자체가 틀린 것은 아니다. 다만 값 하나를 읽기 위해 새 패키지와 별도 래퍼를 관리하게 된다.
+이 코드 자체가 틀린 것은 아니다. 다만 이 화면에서만 쓰면 `isTab`과 `getSelectedTab`은 각각 한 번만 호출되고, `DEFAULT_TAB`도 한 곳에서만 쓴다. 값 하나를 읽기 위해 새 패키지와 여러 이름을 함께 관리하게 된다.
 
-**간략 구현 — 브라우저 기본 기능 사용**
+**간략 구현 — 소스 2줄, 추가 패키지 0개, 새 함수 0개**
 
 ```ts
 const tab = new URLSearchParams(location.search).get("tab");
@@ -231,13 +240,7 @@ const selectedTab = tab === "open" || tab === "done" ? tab : "all";
 
 `URLSearchParams`로 값을 읽고, 허용하지 않은 값은 `all`로 되돌린다. 배열 파라미터, 중첩 객체, 특수한 직렬화 규칙이 생길 때만 기존 유틸이나 라이브러리를 다시 검토하면 된다.
 
-### 비교 메모
-
-- **소스량:** 과잉 구현은 빈 줄을 뺀 6줄, 간략 구현은 2줄이다.
-- **의존성:** 과잉 구현은 `query-string` 패키지 1개가 추가되고, 간략 구현은 추가 패키지가 없다.
-- **새 함수:** `getSelectedTab`은 한 번만 쓰면서 두 줄을 감싼다. 재사용할 곳이나 독립된 예외 규칙이 없다면 함수로 분리할 이유가 약하다.
-
-같은 파싱이 두 곳 이상에서 반복되거나, 탭 허용 규칙이 별도 테스트 대상이 되면 함수로 분리한다. Ponytail은 함수를 없애는 규칙이 아니라, 지금 필요한 책임이 있는지 먼저 확인하는 기준에 가깝다.
+같은 파싱이 두 곳 이상에서 반복되거나, 탭 허용 규칙이 별도 테스트 대상이 되면 함수를 분리한다. Ponytail은 함수를 없애는 규칙이 아니라, 지금 필요한 책임이 있는지 먼저 확인하는 기준에 가깝다.
 
 ### 에이전트에 남긴 요청
 
