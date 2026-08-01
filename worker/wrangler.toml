@@ -4,6 +4,7 @@ compatibility_date = "2026-08-01"
 workers_dev = true
 
 [vars]
+GITHUB_OAUTH_ID = "Ov23livUJNVLh5ocA0jM"
 ALLOWED_USER = "LDH1103"
 ALLOWED_ORIGIN = "https://ldh1103.github.io"
 REPOSITORY = "LDH1103/ai-study-blog"
