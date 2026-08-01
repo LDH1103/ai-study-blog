@@ -1,0 +1,10 @@
+name = "ai-study-blog-cms-auth"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+workers_dev = true
+
+[vars]
+ALLOWED_USER = "LDH1103"
+ALLOWED_ORIGIN = "https://ldh1103.github.io"
+REPOSITORY = "LDH1103/ai-study-blog"
+BRANCH = "main"
