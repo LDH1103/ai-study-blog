@@ -169,6 +169,7 @@ async function verifyAuthor(token: string, env: Env) {
   const headers = {
     Accept: 'application/vnd.github+json',
     Authorization: `Bearer ${token}`,
+    'User-Agent': 'AI-Study-Blog-CMS',
     'X-GitHub-Api-Version': '2022-11-28',
   };
   const userResponse = await fetch('https://api.github.com/user', { headers });
