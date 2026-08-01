@@ -205,39 +205,31 @@ Ponytail은 “이 기능을 새로 만들어야 하나?”를 먼저 확인한�
 
 ### 코드로 비교해 보면
 
-“하루만 고르는 날짜 입력”이 필요하고 이미 쓰는 날짜 컴포넌트도 없다면, 달력 라이브러리를 바로 더할 이유가 없었다.
+목록 화면에서 URL의 `tab` 값 하나만 읽는 상황을 기록해 둔다. 필요한 값은 `all`, `open`, `done` 중 하나이고, 복잡한 URL 직렬화는 없다.
 
-**처음부터 라이브러리를 추가한 경우**
+**과잉 구현 — 새 라이브러리와 래퍼 추가**
 
-```tsx
-import { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+```ts
+import queryString from "query-string";
 
-export function ScheduleForm() {
-  const [date, setDate] = useState<Date | null>(null);
+export function getSelectedTab(search: string) {
+  const parsed = queryString.parse(search);
+  const tab = parsed.tab;
 
-  return <DatePicker selected={date} onChange={setDate} />;
+  return tab === "open" || tab === "done" ? tab : "all";
 }
 ```
 
-새 패키지와 스타일을 관리해야 한다. 날짜 범위, 복잡한 비활성화 규칙, 서비스만의 달력 UI가 필요하다면 이 선택이 맞을 수 있다.
+이 코드 자체가 틀린 것은 아니다. 다만 값 하나를 읽기 위해 새 패키지와 별도 래퍼를 관리하게 된다.
 
-**Ponytail을 적용한 최소 구현**
+**간략 구현 — 브라우저 기본 기능 사용**
 
-```tsx
-export function ScheduleForm() {
-  return (
-    <form action="/api/schedule" method="post">
-      <label htmlFor="scheduled-date">일정 날짜</label>
-      <input id="scheduled-date" name="scheduledDate" type="date" required />
-      <button type="submit">저장</button>
-    </form>
-  );
-}
+```ts
+const tab = new URLSearchParams(location.search).get("tab");
+const selectedTab = tab === "open" || tab === "done" ? tab : "all";
 ```
 
-브라우저가 날짜 입력과 모바일 키보드를 맡고, `label`과 `required`도 기본으로 지원한다. 요구사항이 커질 때만 기존 컴포넌트, 이미 설치한 패키지, 새 라이브러리 순서로 범위를 넓히면 된다.
+`URLSearchParams`로 값을 읽고, 허용하지 않은 값은 `all`로 되돌린다. 배열 파라미터, 중첩 객체, 특수한 직렬화 규칙이 생길 때만 기존 유틸이나 라이브러리를 다시 검토하면 된다.
 
 ### 에이전트에 남긴 요청
 
