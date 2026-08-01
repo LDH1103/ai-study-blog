@@ -32,6 +32,22 @@ body {
   isolation: isolate;
 }
 
+#nc-root :where([class*="AppHeader"], [class*="-card"]) {
+  border-color: var(--cms-rule) !important;
+  background: var(--cms-surface) !important;
+  color: var(--cms-text) !important;
+  box-shadow: none !important;
+}
+
+#nc-root :where([class*="AppHeader"]) {
+  border-bottom: 1px solid var(--cms-rule) !important;
+}
+
+#nc-root :where(.sidebar-active) {
+  background: var(--cms-accent-wash) !important;
+  color: var(--cms-accent-strong) !important;
+}
+
 #nc-root :where(a) {
   color: var(--cms-accent) !important;
   text-underline-offset: 0.18em;
