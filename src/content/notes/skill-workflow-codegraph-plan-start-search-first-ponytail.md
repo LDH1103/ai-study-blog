@@ -200,6 +200,42 @@ Ponytail은 "이 기능을 새로 만들어야 하나"를 먼저 묻는 스킬�
 
 *Ponytail [SKILL.md 원문](https://github.com/DietrichGebert/ponytail/blob/main/skills/ponytail/SKILL.md)에서 일부 발췌했습니다.*
 
+### 코드로 비교해 보면
+
+요구사항이 “하루만 고르는 날짜 입력”이고, 이미 쓰는 날짜 컴포넌트도 없다면 달력 라이브러리를 바로 더할 이유가 없다.
+
+**처음부터 라이브러리를 추가한 경우**
+
+```tsx
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+export function ScheduleForm() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  return <DatePicker selected={date} onChange={setDate} />;
+}
+```
+
+이 방식은 새 패키지와 스타일을 관리해야 한다. 날짜 범위, 복잡한 비활성화 규칙, 서비스만의 달력 UI가 필요하다면 적절하지만, 단순 입력에는 준비가 커질 수 있다.
+
+**Ponytail을 적용한 최소 구현**
+
+```tsx
+export function ScheduleForm() {
+  return (
+    <form action="/api/schedule" method="post">
+      <label htmlFor="scheduled-date">일정 날짜</label>
+      <input id="scheduled-date" name="scheduledDate" type="date" required />
+      <button type="submit">저장</button>
+    </form>
+  );
+}
+```
+
+브라우저가 날짜 입력과 모바일 키보드를 맡고, `label`과 `required`도 기본으로 지원한다. 요구사항이 커질 때만 기존 컴포넌트, 이미 설치한 패키지, 새 라이브러리 순서로 범위를 넓히면 된다.
+
 ```text
 날짜 선택 UI가 필요해.
 Ponytail 기준으로 기존 코드와 브라우저 기본 기능을 먼저 확인하고,
