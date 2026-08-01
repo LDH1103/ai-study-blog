@@ -198,3 +198,67 @@ Home
 
 - 과거 `/notes/`·`/about/` 링크가 깨질 수 있다. 삭제 대신 목록 화면 이동으로 호환성을 보존한다.
 - 목록이 길어질 수 있다. 기존 에디토리얼 리스트와 반응형 제목 규칙을 그대로 재사용한다.
+
+## 승인 대기: 섹션별 설명 이미지와 글 관리자
+
+### 목표
+
+스킬 소개 글에서 `plan-start`, `search-first`, `codegraph`, Ponytail의 설명마다 역할을 보여 주는 이미지를 제공한다. 별도의 관리자 화면에서는 GitHub 로그인 후 글을 작성·수정·삭제하고, 저장 결과가 기존 GitHub Pages 배포 흐름으로 공개되게 한다.
+
+### 범위
+
+#### 포함
+
+- 현재의 단일 흐름 이미지를 네 개의 섹션별 이미지로 교체
+  - `plan-start`: 요구사항·범위·검증 기준을 정리하는 계획 보드
+  - `search-first`: 기존 코드와 문서를 찾는 검색 화면
+  - `codegraph`: 호출 관계와 영향 범위를 보는 노드 그래프
+  - Ponytail: 검증을 유지한 채 최소 구현을 고르는 정리된 코드 화면
+- 공개 글과 분리된 `/admin/` 관리자 화면
+- 제목, 요약, 발행일, 태그, Markdown 본문 입력·미리보기·저장·삭제
+- Decap CMS의 GitHub backend로 `src/content/notes/`의 Markdown 파일을 관리
+- GitHub OAuth App과 Cloudflare Worker OAuth proxy로 `LDH1103`만 관리자 로그인 허용
+- 저장·수정·삭제 때 `main`에 커밋하고 기존 Pages workflow로 자동 배포
+
+#### 제외
+
+- 댓글, 일반 사용자 회원가입, 다중 작성자 권한, DB, 실시간 공동 편집
+- 브라우저에 GitHub PAT를 입력하거나 저장하는 방식
+- 공개 글의 URL·Astro 콘텐츠 스키마·기존 Pages 배포 workflow 변경
+
+### 아키텍처
+
+```text
+관리자 브라우저 (/admin/)
+  └─ GitHub 로그인 ──> Cloudflare Worker OAuth proxy
+                           └─ GitHub OAuth App (비밀값은 Worker secret)
+  └─ Decap CMS GitHub backend ──> ai-study-blog/main
+                                      └─ GitHub Actions ──> GitHub Pages
+
+공개 글
+  └─ Astro Content Collection <── src/content/notes/*.md
+```
+
+### 기술 결정
+
+| 항목 | 선택 | 이유 | 대안 |
+|---|---|---|---|
+| 글 관리자 | Decap CMS | Markdown frontmatter·목록·편집·삭제·Git 커밋 기능을 재구현하지 않는다 | 전용 Astro 관리자 UI + GitHub Contents API |
+| 인증 중계 | Cloudflare Worker | GitHub OAuth client secret을 정적 Pages와 브라우저에 노출하지 않는다 | 별도 Node 서버 |
+| 저장 위치 | 기존 `src/content/notes/` | 현재 Astro 콘텐츠 컬렉션·정적 빌드·Git 이력을 그대로 쓴다 | 외부 DB/CMS |
+| 이미지 | 섹션별 WebP 자산과 명확한 대체 텍스트 | 역할을 글 흐름 안에서 바로 이해하고 모바일 전송량을 줄인다 | 현재 단일 흐름 이미지 유지 |
+
+### 단계별 계획
+
+1. 네 개의 섹션별 이미지를 생성·검수하고, 기존 통합 이미지를 교체한다.
+2. Decap CMS 설정과 `/admin/` 진입 화면을 추가하고, 콘텐츠 스키마를 현재 frontmatter에 맞춘다.
+3. Cloudflare Worker OAuth proxy를 별도 디렉터리에 구성하고, 허용 GitHub 사용자·저장소·브랜치를 고정한다.
+4. GitHub OAuth App과 Cloudflare Worker secret·KV 설정을 사용자 계정에서 구성한 뒤 Worker를 배포한다.
+5. 새 글 작성, 기존 글 수정, 삭제를 각각 테스트하고 Pages 배포 및 공개 URL 반영을 확인한다.
+
+### 리스크와 대응
+
+- GitHub Pages는 정적 호스팅이므로 OAuth client secret을 사이트에 둘 수 없다. 모든 비밀값은 Worker secret에만 저장한다.
+- 잘못된 저장·삭제는 `main`에 커밋된다. CMS에서 삭제 전 확인을 요구하고, Git 이력으로 복구 가능한 점을 관리자에 안내한다.
+- 동시에 편집하면 GitHub 파일 SHA 충돌이 날 수 있다. CMS 오류를 그대로 표시하고 최신 내용 새로고침 후 다시 저장하게 한다.
+- Cloudflare Worker와 GitHub OAuth App 생성·secret 입력은 외부 계정 권한이 필요하다. 사용자의 승인과 계정 조작 허가 후에만 배포한다.

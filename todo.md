@@ -29,3 +29,11 @@
 - [x] [UI] 공통 헤더·탐색 메뉴·활성 경로 계약을 제거 (산출물: `src/layouts/BaseLayout.astro`, `src/styles/global.css`; 헤더 DOM·navigation·`activePath` 제거, 본문 높이 재조정)
 - [x] [UI] 홈의 Hero·소개문 없이 전체 공개 글 목록만 두고, 상세 breadcrumb를 제거하며 중복 목록·소개 경로는 목록으로 이동 (산출물: `src/pages/index.astro`, `src/pages/notes/index.astro`, `src/pages/notes/[...slug].astro`, `src/pages/about.astro`; `Astro.redirect()` 정적 산출물에서 홈 이동 확인)
 - [x] [검증] 정적 빌드·목록/상세 경로·메뉴 부재·모바일 제목 줄바꿈을 확인 (산출물: `npm run build`, 정적 HTML 검사; legacy redirect·홈 목록·상세 breadcrumb 부재·모바일 overflow 방지·PNG 무수정 PASS)
+
+## 승인 대기: 섹션별 설명 이미지와 글 관리자
+
+- [x] [콘텐츠] `plan-start`, `search-first`, `codegraph`, Ponytail별 설명 이미지를 생성·검수하고 스킬 소개 글에 배치 (산출물: Astro 최적화 WebP, 글 Markdown)
+- [ ] [관리자] Decap CMS `/admin/`과 현재 `notes` frontmatter용 편집 폼·미리보기·삭제 확인을 구성 (산출물: `public/admin/`)
+- [ ] [인증] GitHub OAuth App·Cloudflare Worker OAuth proxy·허용 저장소/사용자/브랜치 제한을 구성 (산출물: `worker/`, Cloudflare secret/KV 설정)
+- [ ] [검증] 작성·수정·삭제가 각각 하나의 GitHub 커밋과 Pages 배포로 이어지는지 확인 (산출물: 실행 증거, 공개 URL)
+- [ ] [배포] 관리자 정적 자산과 Worker를 배포하고 `/admin/` 로그인 흐름을 점검 (산출물: Pages·Worker URL)

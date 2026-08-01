@@ -66,3 +66,19 @@
 - 사용자에게 보이는 콘텐츠 화면은 목록(`/`)과 글 상세(`/notes/[slug]/`)로 한정한다.
 - 글 상세에는 별도 breadcrumb·상단 탐색을 두지 않는다.
 - 기존 `/notes/`, `/about/` 주소는 목록 화면으로 이동시켜 공개된 링크 호환성을 유지한다.
+
+## 글 관리자 설계 제약
+
+- 공개 사이트는 계속 GitHub Pages의 정적 Astro 빌드로 제공한다.
+- 글 관리용 GitHub OAuth client secret, Cloudflare API token, GitHub 쓰기 토큰은 브라우저·저장소·정적 사이트에 저장하지 않는다.
+- OAuth proxy는 `LDH1103/ai-study-blog`의 `main`과 `src/content/notes/`만 다루도록 고정한다.
+- 글 수정은 기존 Content Collection frontmatter(`title`, `description`, `publishedAt`, `tags`, 선택 `slidesHtml`, 선택 `draft`)를 지킨다.
+- 관리자 UI는 키보드 탐색, 명확한 라벨, 인라인 오류, 저장 중 상태, 삭제 확인을 제공한다.
+
+## 추가 의존성 후보
+
+| 의존성·서비스 | 용도 | 영향 범위 | 대안 |
+|---|---|---|---|
+| Decap CMS | Git 기반 Markdown 글 작성·수정·삭제 UI | `public/admin/`과 GitHub OAuth 설정 | 전용 관리 UI 구현 |
+| Cloudflare Workers + KV | OAuth code 교환·짧은 세션 보관 | 별도 `worker/` 디렉터리와 Cloudflare 계정 | 별도 Node OAuth 서버 |
+| GitHub OAuth App | 관리자 본인 인증 | GitHub 개발자 설정의 Client ID·secret·callback URL | GitHub App + 별도 인증 계층 |
