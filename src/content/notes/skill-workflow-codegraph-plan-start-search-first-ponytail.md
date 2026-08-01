@@ -28,6 +28,12 @@ tags:
 → 검증과 리뷰
 ```
 
+### SKILL.md 본문 예시
+
+> **Design:** 코드 작성 없이 `plan.md`, `context.md`, `todo.md`를 만든 뒤 사용자 승인을 받는다.
+>
+> **Execute:** 승인 후 `todo.md`의 최상단 미완료 항목 1개만 진행한다.
+
 ```text
 회원가입 기능을 추가하고 싶어.
 plan-start로 이번에 할 일과 하지 않을 일,
@@ -48,6 +54,12 @@ plan-start로 이번에 할 일과 하지 않을 일,
 → 필요할 때만 공식 문서 확인
 → 재사용 / 확장 / 새 구현 결정
 ```
+
+### SKILL.md 본문 예시
+
+> **Repo Search:** `rg`, `rg --files`, package script, import 경로로 기존 책임자를 찾는다.
+>
+> **Decision:** 재사용, 확장, 새 구현 중 하나를 고르고 이유를 남긴다.
 
 ```text
 캐시 기능을 새로 만들기 전에,
@@ -74,6 +86,12 @@ plan-start로 이번에 할 일과 하지 않을 일,
 → 인덱스가 없거나 실패하면 rg 검색으로 전환
 ```
 
+### SKILL.md 본문 예시
+
+> **Check:** `.codegraph/` 존재 여부와 `codegraph status` 또는 MCP status를 확인한다.
+>
+> **Fallback:** CodeGraph가 없거나 실패하면 `search-first`의 `rg`, `rg --files`, 직접 파일 읽기 흐름으로 전환한다.
+
 ```text
 UserService를 바꾸기 전에 codegraph로 호출자와 영향 범위를 확인해 줘.
 영향을 받는 파일과 테스트 후보를 알려주고, 최신 소스도 직접 확인해 줘.
@@ -95,6 +113,14 @@ Ponytail은 "이 기능을 새로 만들어야 하나"를 먼저 묻는 스킬�
 → 이미 설치된 패키지
 → 한 줄 또는 최소 구현
 ```
+
+### SKILL.md 본문 예시
+
+> “Stop at the first rung that holds.”
+>
+> “Native platform feature covers it? `<input type="date">` over a picker lib...”
+
+*Ponytail [SKILL.md 원문](https://github.com/DietrichGebert/ponytail/blob/main/skills/ponytail/SKILL.md)에서 일부 발췌했습니다.*
 
 ```text
 날짜 선택 UI가 필요해.
